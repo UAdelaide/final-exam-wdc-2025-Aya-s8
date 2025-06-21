@@ -3,9 +3,8 @@ const path = require('path');
 const session = require('express-session');
 require('dotenv').config();
 const dogRoutes = require('./routes/dogs');
-app.use('/api/dogs', dogRoutes);
-
 const app = express();
+app.use('/api/dogs', dogRoutes);
 
 // Middleware
 app.use(express.json());
