@@ -55,5 +55,19 @@ router.post('/login', async (req, res) => {
   }
 });
 
-//
+router.get('/me/dogs', async (req, res) => {
+  try {
+    const userId = req.session.user?.id;
+    if (!userId) return res.status(401).json({ error: 'Not logged in' });
+
+    const [dogs] = await pool.query(
+      `SELECT dog_id, name FROM Dogs WHERE owner_id = ?`,
+      [userId]
+    );
+
+    res.json(dogs);
+  } catch (err) {
+    res.status(500).json({ error: 'Could not retrieve dogs' });
+  }
+});
 module.exports = router;
