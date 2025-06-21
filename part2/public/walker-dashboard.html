@@ -10,17 +10,14 @@
 <body class="bg-light">
   <div id="app" class="container py-4">
 
-    <!-- Header with logout -->
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="text-success">Walker Dashboard</h1>
       <button class="btn btn-danger" @click="logout">Log Out</button>
     </div>
 
-    <!-- Alert messages -->
     <div v-if="message" class="alert alert-info">{{ message }}</div>
     <div v-if="error" class="alert alert-danger">{{ error }}</div>
 
-    <!-- Walk requests list -->
     <div v-if="walks.length > 0" class="row">
       <div class="col-md-6 mb-4" v-for="walk in walks" :key="walk.request_id">
         <div class="card">
@@ -48,7 +45,18 @@
         const walks = ref([]);
         const message = ref('');
         const error = ref('');
-        const user = 3;
+        const walkerId = ref(null);
+
+        async function getCurrentUser() {
+          try {
+            const res = await fetch('/api/users/me');
+            if (!res.ok) throw new Error('Not logged in');
+            const data = await res.json();
+            walkerId.value = data.id;
+          } catch (err) {
+            error.value = 'Failed to get current user';
+          }
+        }
 
         async function loadWalkRequests() {
           try {
@@ -61,11 +69,15 @@
         }
 
         async function applyToWalk(requestId) {
+          if (!walkerId.value) {
+            error.value = 'Walker not identified';
+            return;
+          }
           try {
             const res = await fetch(`/api/walks/${requestId}/apply`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ walker_id: user })
+              body: JSON.stringify({ walker_id: walkerId.value })
             });
             const result = await res.json();
 
@@ -88,8 +100,9 @@
           }
         }
 
-        onMounted(() => {
-          loadWalkRequests();
+        onMounted(async () => {
+          await getCurrentUser();
+          await loadWalkRequests();
         });
 
         return {
