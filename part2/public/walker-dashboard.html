@@ -81,9 +81,9 @@
         });
 
         function logout() {
-  fetch('/api/logout', { method: 'POST' })
-    .then(() => window.location.href = '/');
-}
+          fetch('/api/logout', { method: 'POST' })
+          .then(() => window.location.href = '/');
+        }
 
 
         return {
