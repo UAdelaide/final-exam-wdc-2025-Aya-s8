@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dog of the Day</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <style>
+    body {
+      background-color: #ffeaea;
+      font-family: Comic Sans MS, cursive;
+      color: #e0e0e0;
+      text-shadow: 1px 1px 2px pink;
+    }
+    .dog-section {
+      margin: 100px;
+      text-align: center;
+    }
+    .hidden-menu {
+      position: absolute;
+      top: -9999px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>🐶 Welcome to our Dog Site!!! 🐾🐾🐾🐾🐾🐾</h1>
+
+    <p>Before viewing the dog, please read our 4000-word philosophy about dog walking... (not really)</p>
+
+    <div class="dog-section">
+      <button @click="fetchDog">Click 3 times to see the Dog of the Day</button>
+      <img :src="dogImage" width="500" />
+      <p>Name: GoodBoy123!!!</p>
+      <p style="color:#ffeeee">This is a good dog but you can't read this text because it's light gray on pink :)</p>
+    </div>
+
+    <div class="hidden-menu">
+      <p>No keyboard navigation, this is hidden!</p>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          dogImage: ''
+        }
+      },
+      methods: {
+        fetchDog() {
+          fetch('https://dog.ceo/api/breeds/image/random')
+            .then(res => res.json())
+            .then(data => {
+              this.dogImage = data.message;
+            });
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
