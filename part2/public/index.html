@@ -9,8 +9,9 @@
 </head>
 <body class="bg-light">
   <div id="app" class="container py-5">
+
     <!-- Login Form -->
-    <div v-if="!loggedIn">
+    <div v-if="!loggedIn" class="mb-5">
       <h1 class="mb-4 text-primary">Login to Dog Walking Service</h1>
       <form @submit.prevent="login">
         <div class="mb-3">
@@ -26,29 +27,28 @@
       </form>
     </div>
 
-    <!-- Dog Display After Login -->
-    <div v-else>
-      <h1 class="mb-4 text-primary">All Dogs</h1>
-      <div class="row" v-if="dogs.length > 0">
-        <div class="col-md-4 mb-4" v-for="dog in dogs" :key="dog.dog_id">
-          <div class="card h-100">
-            <img :src="dog.image" class="card-img-top" alt="Dog photo" />
-            <div class="card-body">
-              <h5 class="card-title">{{ dog.name }}</h5>
-              <p class="card-text">
-                <strong>Breed:</strong> {{ dog.breed }}<br />
-                <strong>Size:</strong> {{ dog.size }}
-              </p>
-            </div>
+    <!-- Dog Display (Always visible) -->
+    <h1 class="mb-4 text-primary">All Dogs</h1>
+    <div class="row" v-if="dogs.length > 0">
+      <div class="col-md-4 mb-4" v-for="dog in dogs" :key="dog.dog_id">
+        <div class="card h-100">
+          <img :src="dog.image" class="card-img-top" alt="Dog photo" />
+          <div class="card-body">
+            <h5 class="card-title">{{ dog.name }}</h5>
+            <p class="card-text">
+              <strong>Breed:</strong> {{ dog.breed }}<br />
+              <strong>Size:</strong> {{ dog.size }}
+            </p>
           </div>
         </div>
       </div>
-      <p v-else>Loading dogs...</p>
     </div>
+    <p v-else>Loading dogs...</p>
+
   </div>
 
   <script>
-    const { createApp, ref } = Vue;
+    const { createApp, ref, onMounted } = Vue;
 
     createApp({
       setup() {
@@ -69,7 +69,6 @@
             const result = await res.json();
             if (result.success) {
               loggedIn.value = true;
-              loadDogs();
             } else {
               loginError.value = result.message || 'Login failed';
             }
@@ -94,6 +93,10 @@
             console.error('Failed to load dogs', err);
           }
         }
+
+        onMounted(() => {
+          loadDogs(); // fetch dogs immediately on page load
+        });
 
         return {
           username,
