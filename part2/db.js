@@ -5,7 +5,7 @@ const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'DogWalkService', // 或你实际使用的数据库名称
+  database: 'DogWalkService',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
