@@ -1,11 +1,11 @@
-const express = require('express');
+onst express = require('express');
 const pool = require('../db');
 const router = express.Router();
 
 router.get('/walkers/summary', async (req, res) => {
   try {
     const [rows] = await pool.query(`
-      SELECT 
+      SELECT
         u.username AS walker_username,
         COUNT(r.rating_id) AS total_ratings,
         ROUND(AVG(r.rating), 1) AS average_rating,
@@ -25,4 +25,5 @@ router.get('/walkers/summary', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = router;c
+z
