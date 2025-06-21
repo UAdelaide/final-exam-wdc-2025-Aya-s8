@@ -1,4 +1,4 @@
-onst express = require('express');
+const express = require('express');
 const pool = require('../db');
 const router = express.Router();
 
@@ -25,5 +25,4 @@ router.get('/walkers/summary', async (req, res) => {
   }
 });
 
-module.exports = router;c
-z
+module.exports = router;
