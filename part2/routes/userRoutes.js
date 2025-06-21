@@ -60,7 +60,7 @@ router.get('/me/dogs', async (req, res) => {
     const userId = req.session.user?.id;
     if (!userId) return res.status(401).json({ error: 'Not logged in' });
 
-    const [dogs] = await pool.query(
+    const [dogs] = await db.query(
       `SELECT dog_id, name FROM Dogs WHERE owner_id = ?`,
       [userId]
     );
