@@ -91,6 +91,12 @@
           }
         }
 
+        function logout() {
+  fetch('/api/logout', { method: 'POST' })
+    .then(() => window.location.href = '/');
+}
+
+
         async function submitWalkRequest() {
           try {
             const res = await fetch('/api/walks', {
